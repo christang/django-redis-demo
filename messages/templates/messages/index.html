@@ -1,0 +1,25 @@
+<p>cities: <span id="cities"/></span></p>
+<p>users:  <span id="users"/></span></p>
+<p>errors: <span id="error"/></span></p>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+  function refresh() {
+    $.ajax({
+        url: '/stats/get',
+        success: function(response) {
+          if (response.result === 'success') {
+            $('#cities').html(response.cities);
+            $('#users').html(response.users);
+            $('#error').html('none');
+          } else {
+            $('#cities').html('-');
+            $('#users').html('-');
+            $('#error').html(response.error);
+          }
+          setTimeout(refresh, {{ interval }});
+        }
+      });
+    }
+
+  $(function(){ refresh(); });
+</script>
