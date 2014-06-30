@@ -83,3 +83,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = 'staticfiles'
+
+# Backend cache
+
+import urlparse
+redis_url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost:6379'))
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': '%s:%s' % (redis_url.hostname, redis_url.port),
+        'OPTIONS': {},
+    }
+}
